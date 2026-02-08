@@ -7,14 +7,14 @@ const client = new DynamoDBClient({ region: "ap-southeast-2" }); // change to yo
 exports.batchWrite = async () => {
     const params = {
         RequestItems: {
-            BooksComposite: [ // <-- replace with your table name
+            Books_LSI: [ // <-- replace with your table name
                 {
                     PutRequest: {
                         Item: {
                             book_id: { S: "12345" },          // Partition key (string)
-                            price: { S: "369.369" },          // Attribute (string)
+                            price: { N: "369" },          // Attribute (string)
                             title: { S: "How to be great again" },              // Attribute (number)
-                            author: { S: "MOhit Ji" },
+                            author: { S: "Mohit Ji" },
                             releaseDate: {S: new Date().toISOString()},
                             createdAt: { S: new Date().toISOString() }   // Attribute (boolean)
                         }
@@ -24,9 +24,9 @@ exports.batchWrite = async () => {
                     PutRequest: {
                         Item: {
                             book_id: { S: "123456" },          // Partition key (string)
-                            price: { S: "10000.369" },          // Attribute (string)
+                            price: { N: "10000" },          // Attribute (string)
                             title: { S: "How to be great again4" },              // Attribute (number)
-                            author: { S: "MOhit Ji" },
+                            author: { S: "Mohit Ji" },
                             releaseDate: {S: new Date().toISOString()},
                             createdAt: { S: new Date().toISOString() }   // Attribute (boolean)
                         }

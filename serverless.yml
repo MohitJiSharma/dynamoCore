@@ -10,6 +10,7 @@ provider:
   environment:
     DYNAMO_TABLE: Books
     DYNAMO_TABLE_BOOKS_COMP: BooksComposite
+    DYNAMO_TABLE_BOOKS_LSI: Books_LSI
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -24,6 +25,10 @@ provider:
       Resource: 
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/BooksComposite
+        - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books_LSI
+        - arn:aws:dynamodb:ap-southeast-2:157539276341:table/BooksComposite/index/author-title_gsi
+        - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books_LSI/index/author-title-gsi
+        - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books_LSI/index/price-index
   # Uncomment to easily set up a custom domain. Read the docs for more details:
   # https://www.serverless.com/framework/docs/providers/aws/guide/domains
   # domain: api.example.com
@@ -80,5 +85,11 @@ functions:
     events:
       - httpApi:
           path: /query-records
-          method: GET     
+          method: GET   
+  gsiFetch:
+    handler: handlers/fetchGSI.fetchGSI
+    events:
+      - httpApi:
+          path: /query-gsi
+          method: GET    
 
