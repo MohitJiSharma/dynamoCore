@@ -1,0 +1,84 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: mohit1508
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: dynamodbprojects
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-southeast-2
+  environment:
+    DYNAMO_TABLE: Books
+    DYNAMO_TABLE_BOOKS_COMP: BooksComposite
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:Scan
+        - dynamodb:DeleteItem
+        - dynamodb:GetItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:BatchGetItem
+        - dynamodb:Query
+      Resource: 
+        - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books
+        - arn:aws:dynamodb:ap-southeast-2:157539276341:table/BooksComposite
+  # Uncomment to easily set up a custom domain. Read the docs for more details:
+  # https://www.serverless.com/framework/docs/providers/aws/guide/domains
+  # domain: api.example.com
+
+functions:
+  dynamoInsert:
+    handler: handlers/dynamoDBInsert.dynamoInsert
+    events:
+      - httpApi:
+          path: /insert_book
+          method: get
+
+  fetchDynamoRecord:
+    handler: handlers/fetchDynamoItem.fetchDynamoRecord
+    events:
+      - httpApi:
+          path: /fetch-item
+          method: get
+
+  deleteItem:
+    handler: handlers/deleteItem.deleteItem
+    events:
+      - httpApi:
+          path: /delete-item
+          method: get
+
+  batchWrite:
+    handler: handlers/batchWrite.batchWrite
+    events:
+      - httpApi:
+          path: /batch-write
+          method: get
+  batchRead:
+    handler: handlers/batchGetItems.batchGetItems
+    events:
+      - httpApi:
+          path: /batch-read
+          method: get
+  addItemAttr:
+    handler: handlers/addItemAttr.addItemAttr
+    events:
+      - httpApi:
+          path: /add-itemAttr
+          method: get  
+  scanItemAttr:
+    handler: handlers/scanWithAttr.scanWithAttr
+    events:
+      - httpApi:
+          path: /scan-itemAttr
+          method: post  
+
+  queryRecords:
+    handler: handlers/queryCommand.queryRecords
+    events:
+      - httpApi:
+          path: /query-records
+          method: GET     
+
