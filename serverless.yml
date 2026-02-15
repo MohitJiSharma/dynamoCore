@@ -11,6 +11,7 @@ provider:
     DYNAMO_TABLE: Books
     DYNAMO_TABLE_BOOKS_COMP: BooksComposite
     DYNAMO_TABLE_BOOKS_LSI: Books_LSI
+    DYNAMO_TABLE_ECOMM: Ecomm
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -26,6 +27,7 @@ provider:
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/BooksComposite
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books_LSI
+        - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Ecomm
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/BooksComposite/index/author-title_gsi
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books_LSI/index/author-title-gsi
         - arn:aws:dynamodb:ap-southeast-2:157539276341:table/Books_LSI/index/price-index
@@ -92,4 +94,44 @@ functions:
       - httpApi:
           path: /query-gsi
           method: GET    
+  singleFileUser:
+    handler: handlers/insertSingleFileUser.singleFileUser
+    events:
+      - httpApi:
+          path: /insert-user
+          method: POST
+  insertOrder:
+    handler: handlers/insertOrder.insertOrder
+    events:
+      - httpApi:
+          path: /insert-order
+          method: POST
+  insertProducts:
+    handler: handlers/insertProducts.insertProducts
+    events:
+      - httpApi:
+          path: /insert-products
+          method: POST
+  fetchUsersSingleTable:
+    handler: handlers/fetchUsersSingleTable.fetchUsersSingleTable
+    events:
+      - httpApi:
+          path: /fetch-singletable-users
+          method: GET
+  fetchOrderByUserId:
+    handler: handlers/fetchOrderByUserId.fetchOrderByUserId
+    events:
+      - httpApi:
+          path: /fetch-ordersby-users
+          method: GET
+  fetchProductsByOrderId:
+    handler: handlers/fetchProductsByOrderId.fetchProductsByOrderId
+    events:
+      - httpApi:
+          path: /fetch-productsby-order
+          method: GET
 
+
+
+
+          
